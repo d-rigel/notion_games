@@ -1,0 +1,39 @@
+h3,
+p {
+  color: #c1d1e8;
+}
+
+.games {
+  height: 100vh;
+}
+
+.games__form {
+  min-height: 21rem;
+  background: #0e1a2b;
+}
+
+.form__heading {
+  color: #ffffff;
+}
+
+.custom-btn {
+  background-color: #5692e8 !important;
+}
+
+.form-label {
+  color: #ffffff;
+}
+
+form input,
+.select-custom,
+input ::-webkit-input-placeholder {
+  color: #c1d1e8 !important;
+  border: none !important;
+  background-color: #182c47 !important;
+}
+
+form input:focus {
+  background-color: transparent !important;
+  color: white;
+  box-shadow: none !important;
+}

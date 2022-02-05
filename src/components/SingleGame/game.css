@@ -1,0 +1,31 @@
+.games__item {
+  display: flex;
+  min-height: 30vh;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #0e1a2b;
+}
+
+.games__item-img {
+  display: block;
+  width: 10rem;
+  height: 12rem;
+  margin-right: 7px;
+  background: linear-gradient(
+    45deg,
+    rgb(243, 125, 125) 0 20%,
+    rgb(172, 172, 221) 50% 30%
+  );
+}
+
+.item__desc {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60ch;
+}
+
+.item__name {
+  font-size: 22px;
+}
