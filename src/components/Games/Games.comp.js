@@ -11,7 +11,6 @@ import axios from "axios";
 function Games() {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState(allData);
-  // const [sortStatus, setSortStatus] = useState("all");
   const [refreshing, setRefreshing] = useState(false);
   const [sortType, setSortType] = useState("all");
 
@@ -30,16 +29,18 @@ function Games() {
 
   const resetState = (e) => {
     e.preventDefault();
+    e.target.elements.text.value = "";
+    e.target.elements.selectOpt.value = "";
 
-    // e.target.elements.text.value = " ";
-    // e.target.elements.selectOpt.value = "";
-    if (refreshing) {
-      setAllData(allData);
-      setRefreshing(false);
-    } else {
-      setAllData([...allData, ...filteredData]);
-    }
-    setRefreshing(false);
+    setFilteredData(allData);
+
+    // if (refreshing) {
+    //   setAllData(allData);
+    //   setRefreshing(false);
+    // } else {
+    //   setAllData([...allData, ...filteredData]);
+    // }
+    // setRefreshing(false);
   };
 
   //making api when page renders
@@ -99,6 +100,7 @@ function Games() {
                     className="select-custom"
                     name="selectOpt"
                     onChange={(e) => setSortType(e.target.value)}>
+                    <option value=""></option>
                     <option value="first_release_date">release-dates</option>
                     <option value="rating">ratings</option>
                   </Form.Select>
