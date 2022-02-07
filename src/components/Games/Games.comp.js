@@ -11,7 +11,9 @@ import axios from "axios";
 function Games() {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState(allData);
-  const [sortStatus, setSortStatus] = useState("all");
+  // const [sortStatus, setSortStatus] = useState("all");
+  const [refreshing, setRefreshing] = useState(false);
+  const [sortType, setSortType] = useState("all");
 
   //handling search in the search input
   const handleSearch = (e) => {
@@ -24,30 +26,20 @@ function Games() {
     setFilteredData(result);
   };
 
-  //handling sorting
-  const handleSort = (e) => {
-    // let value = e.target.value.toLowerCase()
-    if (sortStatus === "release") {
-      allData.sort((a, b) => {
-        if (a.release < b.release) return -1;
-        if (a.release > b.release) return 1;
-        return 0;
-      });
-    } else if (sortStatus === "ratings") {
-      allData.sort((a, b) => {
-        if (a.release > b.release) return -1;
-        if (a.release < b.release) return 1;
-        return 0;
-      });
-    }
-  };
-
   //reseting the inputs without api call
+
   const resetState = (e) => {
     e.preventDefault();
 
-    e.target.elements.text.value = " ";
-    e.target.elements.selectOpt.value = "";
+    // e.target.elements.text.value = " ";
+    // e.target.elements.selectOpt.value = "";
+    if (refreshing) {
+      setAllData(allData);
+      setRefreshing(false);
+    } else {
+      setAllData([...allData, ...filteredData]);
+    }
+    setRefreshing(false);
   };
 
   //making api when page renders
@@ -63,6 +55,21 @@ function Games() {
         console.log(`Error fetching data ${error}`);
       });
   }, []);
+
+  useEffect(() => {
+    const sortArray = (type) => {
+      const types = {
+        first_release_date: "first_release_date",
+        rating: "rating",
+      };
+      const sortProperty = types[type];
+      const sorted = [...allData].sort(
+        (a, b) => b[sortProperty] - a[sortProperty]
+      );
+      setFilteredData(sorted);
+    };
+    sortArray(sortType);
+  }, [sortType]);
 
   return (
     <div className="games">
@@ -91,10 +98,9 @@ function Games() {
                     aria-label="Default select example"
                     className="select-custom"
                     name="selectOpt"
-                    onChange={(e) => handleSort(e.target.value)}>
-                    <option value="all">all</option>
-                    <option value="release">release-dates</option>
-                    <option value="ratings">ratings</option>
+                    onChange={(e) => setSortType(e.target.value)}>
+                    <option value="first_release_date">release-dates</option>
+                    <option value="rating">ratings</option>
                   </Form.Select>
                   <Button
                     variant="primary"
