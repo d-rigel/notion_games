@@ -11,7 +11,6 @@ import axios from "axios";
 function Games() {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState(allData);
-  const [refreshing, setRefreshing] = useState(false);
   const [sortType, setSortType] = useState("all");
 
   //handling search in the search input
@@ -33,14 +32,6 @@ function Games() {
     e.target.elements.selectOpt.value = "";
 
     setFilteredData(allData);
-
-    // if (refreshing) {
-    //   setAllData(allData);
-    //   setRefreshing(false);
-    // } else {
-    //   setAllData([...allData, ...filteredData]);
-    // }
-    // setRefreshing(false);
   };
 
   //making api when page renders
@@ -57,6 +48,7 @@ function Games() {
       });
   }, []);
 
+  //handling sorting
   useEffect(() => {
     const sortArray = (type) => {
       const types = {
