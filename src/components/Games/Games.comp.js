@@ -7,11 +7,14 @@ import Col from "react-bootstrap/Col";
 import "./games.comp.css";
 import Game from "../SingleGame/Game.comp";
 import axios from "axios";
+import { Pagination } from "../paginate/Pagination.comp";
 
 function Games() {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState(allData);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPerPage, setDataPerPage] = useState(10);
   const [sortType, setSortType] = useState("all");
 
   //handling search in the search input
@@ -74,6 +77,14 @@ function Games() {
     sortArray(sortType);
   }, [sortType]);
 
+  //Get current data
+  const indexOfLastData = currentPage * dataPerPage;
+  const indexOfFirstData = indexOfLastData - dataPerPage;
+  const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+  //Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="games">
       <Container className="p-5">
@@ -118,14 +129,29 @@ function Games() {
 
             <Col sm={8}>
               <div className="games__items">
-                {filteredData.map((game) => (
+                {/* {filteredData.map((game) => (
                   <Game
+                    loading={loading}
+                    name={game.name}
+                    key={game.id}
+                    date={game.first_release_date}
+                    summary={game.summary}
+                  />
+                ))} */}
+                {currentData.map((game) => (
+                  <Game
+                    loading={loading}
                     name={game.name}
                     key={game.id}
                     date={game.first_release_date}
                     summary={game.summary}
                   />
                 ))}
+                <Pagination
+                  dataPerPage={dataPerPage}
+                  totalData={filteredData.length}
+                  paginate={paginate}
+                />
               </div>
             </Col>
           </>
