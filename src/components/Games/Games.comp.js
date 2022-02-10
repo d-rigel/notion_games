@@ -11,6 +11,7 @@ import axios from "axios";
 function Games() {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState(allData);
+  const [loading, setLoading] = useState(false);
   const [sortType, setSortType] = useState("all");
 
   //handling search in the search input
@@ -36,16 +37,25 @@ function Games() {
 
   //making api when page renders
   useEffect(() => {
-    axios
-      .get("https://adaorachi.github.io/esetech-assessment-api/game-data.json")
-      .then((res) => {
-        setAllData(res.data);
-        setFilteredData(res.data);
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(`Error fetching data ${error}`);
-      });
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await axios.get(
+        "https://adaorachi.github.io/esetech-assessment-api/game-data.json"
+      );
+      setAllData(res.data);
+      setFilteredData(res.data);
+    };
+    // axios
+    //   .get("https://adaorachi.github.io/esetech-assessment-api/game-data.json")
+    //   .then((res) => {
+    //     setAllData(res.data);
+    //     setFilteredData(res.data);
+    //     console.log(res);
+    //   })
+    //   .catch((error) => {
+    //     console.log(`Error fetching data ${error}`);
+    //   });
+    fetchData();
   }, []);
 
   //handling sorting
