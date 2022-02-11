@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Spinner from "react-bootstrap/Spinner";
 import "./games.comp.css";
 import Game from "../SingleGame/Game.comp";
 import axios from "axios";
@@ -12,7 +13,7 @@ import { Pagination } from "../paginate/Pagination.comp";
 function Games() {
   const [allData, setAllData] = useState([]);
   const [filteredData, setFilteredData] = useState(allData);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage, setDataPerPage] = useState(10);
   const [sortType, setSortType] = useState("all");
@@ -41,23 +42,17 @@ function Games() {
   //making api when page renders
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      // setLoading(true);
       const res = await axios.get(
         "https://adaorachi.github.io/esetech-assessment-api/game-data.json"
       );
+
       setAllData(res.data);
       setFilteredData(res.data);
+      setLoading(false);
+      console.log("for loading", loading);
     };
-    // axios
-    //   .get("https://adaorachi.github.io/esetech-assessment-api/game-data.json")
-    //   .then((res) => {
-    //     setAllData(res.data);
-    //     setFilteredData(res.data);
-    //     console.log(res);
-    //   })
-    //   .catch((error) => {
-    //     console.log(`Error fetching data ${error}`);
-    //   });
+    // setLoading(true);
     fetchData();
   }, []);
 
@@ -129,29 +124,26 @@ function Games() {
 
             <Col sm={8}>
               <div className="games__items">
-                {/* {filteredData.map((game) => (
-                  <Game
-                    loading={loading}
-                    name={game.name}
-                    key={game.id}
-                    date={game.first_release_date}
-                    summary={game.summary}
-                  />
-                ))} */}
-                {currentData.map((game) => (
-                  <Game
-                    loading={loading}
-                    name={game.name}
-                    key={game.id}
-                    date={game.first_release_date}
-                    summary={game.summary}
-                  />
-                ))}
-                <Pagination
-                  dataPerPage={dataPerPage}
-                  totalData={filteredData.length}
-                  paginate={paginate}
-                />
+                {loading ? (
+                  <Spinner variant="primary" animation="border"></Spinner>
+                ) : (
+                  <>
+                    {currentData.map((game) => (
+                      <Game
+                        loading={loading}
+                        name={game.name}
+                        key={game.id}
+                        date={game.first_release_date}
+                        summary={game.summary}
+                      />
+                    ))}
+                    <Pagination
+                      dataPerPage={dataPerPage}
+                      totalData={filteredData.length}
+                      paginate={paginate}
+                    />
+                  </>
+                )}
               </div>
             </Col>
           </>

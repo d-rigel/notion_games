@@ -2,10 +2,11 @@ import React from "react";
 import "./game.css";
 import moment from "moment";
 
-function Game({ loading, name, date, summary }) {
+function Game({ name, date, summary }) {
   let newDate = new Date();
   const weekday = date;
   newDate.setTime(weekday);
+
   return (
     <>
       <div className="games__item">
